@@ -1,17 +1,14 @@
-import { userQuery, userMutation } from 'graphql/module/users/resolver'
+import { userQuery, userMutation } from 'graphql/module/users'
+import { postQuery, postMutation } from 'graphql/module/posts'
 
 export default {
   Query: {
-    ...userQuery
+    ...userQuery,
+    ...postQuery
   },
 
   Mutation: {
-    ...userMutation
+    ...userMutation,
+    ...postMutation
   }
-
-  // MutationResponse: {
-  //   __resolveType(mutationResponse, context, info) {
-  //     return null
-  //   }
-  // }
 }

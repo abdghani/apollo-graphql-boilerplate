@@ -9,3 +9,11 @@
 ## Contents
 - [Getting Started](docs/getting_started.md)
 
+# Modules
+## Any standard module here comprises of :
+- **mutation.js** : All mutation related to the module
+- **query.js** : All query related to the module.
+- **types.js** : It contains all the types of graphql object related to the module
+- **resolver.js** : Central place for all resolvers related to the module
+- **util.js** (optional) : Helper funtions specific to that module
+

@@ -32,9 +32,14 @@ const typeDefs = gql`
     userPosts(paginateInput: PaginateInput, postFilter: PostFilter): PostPaginate
   }
 
-  type Mutation {
-    createPost(title: String!, content: String): MutationResponse!
+  type Subscription {
+    postCreated: Post
   }
+
+  type Mutation {
+    createPost(title: String!, content: String): Post!
+  }
+
 `
 
 export default typeDefs

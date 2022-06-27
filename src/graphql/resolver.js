@@ -1,5 +1,5 @@
 import { userQuery, userMutation } from 'graphql/module/users'
-import { postQuery, postMutation } from 'graphql/module/posts'
+import { postQuery, postMutation, postSubscription } from 'graphql/module/posts'
 
 export default {
   Query: {
@@ -10,5 +10,9 @@ export default {
   Mutation: {
     ...userMutation,
     ...postMutation
+  },
+
+  Subscription: {
+    ...postSubscription
   }
 }

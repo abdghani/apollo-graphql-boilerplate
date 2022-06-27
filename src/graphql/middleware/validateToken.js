@@ -20,7 +20,7 @@ function validateRefreshToken(token) {
   }
 }
 
-async function validateTokensMiddleware(req, res, next) {
+const validateTokensMiddleware = async (req, res, next) => {
   const authHeader = req.headers?.authorization
   // console.log("authHeader", authHeader);
   if (!isUndefined(authHeader)) {
@@ -31,38 +31,27 @@ async function validateTokensMiddleware(req, res, next) {
       return next()
     }
     return next()
-  } else {
-    const refreshToken = req.cookies['refresh']
-    const accessToken = req.cookies['access']
-    if (!accessToken && !refreshToken) return next()
-
-    const decodedAccessToken = validateAccessToken(accessToken)
-    if (decodedAccessToken && decodedAccessToken.user) {
-      req.user = decodedAccessToken.user
-      return next()
-    }
-
-    const decodedRefreshToken = validateRefreshToken(refreshToken)
-    if (decodedRefreshToken && decodedRefreshToken.user) {
-      // valid refresh token
-      const user = await User.findOne({ _id: decodedRefreshToken.user.id })
-      // valid user and user token not invalidated
-      if (!user || user.tokenCount !== decodedRefreshToken.user.count) {
-        res.clearCookie('access')
-        res.clearCookie('refresh')
-        return next()
-      }
-      // refresh the tokens
-      const userTokens = setTokens(user)
-      req.user = decodedRefreshToken.user
-
-      const cookies = tokenCookies(userTokens)
-      res.cookie(...cookies.access)
-      res.cookie(...cookies.refresh)
-      return next()
-    }
-    next()
   }
+  next()
 }
 
-export default validateTokensMiddleware
+const validateTokenSubsMiddleware = async (ctx, msg, args) => {
+  // ctx is the graphql-ws Context where connectionParams live
+  let currentUser;
+  const authHeader = ctx.connectionParams?.Authorization
+
+  if (!isUndefined(authHeader)) {
+    const accessToken = authHeader.split(' ')[1]
+    const decodedAccessToken = validateAccessToken(accessToken)
+    if (decodedAccessToken && decodedAccessToken.user) {
+      currentUser = decodedAccessToken.user
+    }
+  }
+  
+  return { currentUser };
+};
+
+module.exports = {
+  validateTokensMiddleware,
+  validateTokenSubsMiddleware
+}

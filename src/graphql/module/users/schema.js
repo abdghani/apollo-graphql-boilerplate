@@ -9,6 +9,8 @@ const typeDefs = gql`
     about: String
     verified: Boolean!
     role: String
+    createdAt: Date!
+    updatedAt: Date!
   }
 
   type MutationResponse {

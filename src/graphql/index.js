@@ -1,9 +1,6 @@
 import { ApolloServer } from 'apollo-server-express'
 import typeDefs from 'graphql/typedef'
 import resolvers from 'graphql/resolver'
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import { DateTimeResolver, DateTimeTypeDefinition } from "graphql-scalars"
-
 
 const apolloServer = async app => {
   const apolloServer = new ApolloServer({
